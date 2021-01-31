@@ -148,24 +148,6 @@ class Data(object):
         self.start = Raffle(int(x), int(y), int(bomb))
         
 
-class Popup(object):
-    def __init__(self, imagePath):
-        self.path = imagePath
-        self.imageW = pygame.image.load(imagePath).get_width()
-        self.imageH = pygame.image.load(imagePath).get_height()
-
-    def display(self):
-        self.root = tk.Tk()
-        self.root.geometry("100x150+500+200")
-        self.image = ImageTk.PhotoImage(Image.open(self.path))
-        canvas = tk.Label(self.root, image = self.image)
-        canvas.pack()
-        submit=tk.Button(self.root,text = 'Submit', command = self.submit) 
-        submit.pack()
-        self.root.mainloop()
-
-    def submit(self): 
-        self.root.destroy()
 
 
 
@@ -176,7 +158,7 @@ class Grid(object):
         self.bomb = False
         self.notbomb = False
         self.col = (0, 0, 0)
-        self.popup = Popup("images/bomb.png")
+        self.image = pygame.image.load("images/bomb.png")
         self.clicked = False
         
     def _id(self):
@@ -185,16 +167,15 @@ class Grid(object):
             self.notbomb = True
             self.bomb = False
             self.clicked = False
-            self.popup.display()
 
 
     def show(self, win):
-        if self.notbomb:
-            self.col = (231,76,60)
-        if self.clicked:
+        if self.clicked and not self.notbomb:
             self.col = (231, 0, 150)
         pygame.draw.rect(win, self.col, (self.x*self.w, self.y*self.h, self.w-1, self.h-1))
-
+        if self.notbomb:
+            win.blit(pygame.transform.scale(self.image, (self.w-1, self.h-1)), (self.x*self.w, self.y*self.h))
+            
 
 
 class Raffle(object):
@@ -265,7 +246,7 @@ class Raffle(object):
                 for j in range(self.rows):
                     spot = self.grid[i][j]
                     spot.show(self.win)
-                    show_text(str(i+j*self.cols+1), i*self.w+self.w//3, j*self.h+self.h//3, 1, 9999, self.font, self.win)        
+                    show_text(str(i+j*self.cols+1), i*self.w+self.w//3+2, j*self.h+self.h//3+10, 1, 9999, self.font, self.win)        
                     
             pygame.display.flip()
 
