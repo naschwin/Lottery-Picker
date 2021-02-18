@@ -1,7 +1,8 @@
 # Lottery Picker
 
 ### Summary
-Randomly select numbers for lottery.
+Randomly select numbers for lottery.<br>
+Using Pygame as the GUI Library.
 
 ### Start 
 - Select Range<br>
